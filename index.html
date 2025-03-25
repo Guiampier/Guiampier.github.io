@@ -5,16 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizador de Formatos Minecraft</title>
     <style>
-        /* Estilos anteriores se mantienen igual */
-        /* ... */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #55FF55;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .input-section, .output-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            background-color: #2d2d2d;
+            color: white;
+            border: 2px solid #555;
+            border-radius: 8px;
+            font-family: monospace;
+            min-height: 150px;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .color-display {
+            background-color: #252525;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            min-height: 60px;
+            word-break: break-all;
+            border: 1px solid #444;
+        }
+        .letter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .letter-box {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            min-width: 70px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .letter {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .color-preview {
+            width: 50px;
+            height: 25px;
+            margin: 0 auto 8px;
+            border: 1px solid #444;
+            border-radius: 3px;
+        }
+        .color-code {
+            font-family: monospace;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        .controls {
+            margin: 25px 0;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        .format-info {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #444;
+        }
+        .format-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .format-table th, .format-table td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+        }
+        .format-table th {
+            background-color: #2d2d2d;
+        }
+        @keyframes obfuscate {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .obfuscated {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.2em;
+            animation: obfuscate 0.3s infinite;
+            display: inline-block;
+        }
+        .strikethrough {
+            text-decoration: line-through;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+        .italic {
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <!-- HTML anterior se mantiene igual -->
-    <!-- ... -->
+    <h1>Visualizador de Formatos Minecraft</h1>
+    
+    <div class="container">
+        <div class="input-section">
+            <h2>Introduce tu código:</h2>
+            <textarea id="minecraftCode" placeholder="Ejemplo: &k&lOculto &nSubrayado">&#0CD7FB&lP&#3DBFF2&lW&#6DA7E9&lA&#9E8EDF&lR&#CE76D6&lP &#FF5ECD&lM&#E74CD6&la&#CE3ADE&lp&#B627E7&la&#9D15EF&lr&#8503F8&lt</textarea>
+            <div class="controls">
+                <button onclick="processCode()">Mostrar Formato</button>
+                <button onclick="copyCode()">Copiar Código</button>
+                <button onclick="resetAll()">Resetear</button>
+            </div>
+            
+            <div class="format-info">
+                <h3>Formatos disponibles:</h3>
+                <table class="format-table">
+                    <tr>
+                        <th>Código</th>
+                        <th>Formato</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                    <tr>
+                        <td>&k</td>
+                        <td>Obfuscated (texto aleatorio)</td>
+                        <td><span class="obfuscated">Texto oculto</span></td>
+                    </tr>
+                    <tr>
+                        <td>&l</td>
+                        <td>Bold (negrita)</td>
+                        <td><strong>Texto en negrita</strong></td>
+                    </tr>
+                    <tr>
+                        <td>&m</td>
+                        <td>Strikethrough (tachado)</td>
+                        <td><span class="strikethrough">Texto tachado</span></td>
+                    </tr>
+                    <tr>
+                        <td>&n</td>
+                        <td>Underline (subrayado)</td>
+                        <td><span class="underline">Texto subrayado</span></td>
+                    </tr>
+                    <tr>
+                        <td>&o</td>
+                        <td>Italic (cursiva)</td>
+                        <td><em>Texto en cursiva</em></td>
+                    </tr>
+                    <tr>
+                        <td>&r</td>
+                        <td>Reset (reinicia formato)</td>
+                        <td>Texto normal</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <h2>Resultado:</h2>
+            <div class="color-display" id="colorResult"></div>
+            
+            <h2>Desglose por letra:</h2>
+            <div class="letter-grid" id="letterGrid"></div>
+        </div>
+    </div>
 
     <script>
-        // Variables para controlar la animación del texto ofuscado
+        // Variables para controlar la animación
         let obfuscationInterval;
         let obfuscatedElements = [];
         
@@ -23,11 +218,11 @@
             const resultDiv = document.getElementById('colorResult');
             const letterGrid = document.getElementById('letterGrid');
             
-            // Limpiar resultados anteriores y detener animación
-            resultDiv.innerHTML = '';
-            letterGrid.innerHTML = '';
+            // Limpiar resultados anteriores
             clearInterval(obfuscationInterval);
             obfuscatedElements = [];
+            resultDiv.innerHTML = '';
+            letterGrid.innerHTML = '';
             
             let currentColor = '#FFFFFF';
             let isBold = false;
@@ -37,13 +232,11 @@
             let isItalic = false;
             let lettersProcessed = 0;
             
-            // Función para generar caracteres aleatorios
             function getRandomChar() {
                 const chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             }
             
-            // Función para añadir una letra al grid
             function addLetterToGrid(char, color, formats) {
                 if (char.trim() === '') return;
                 
@@ -77,29 +270,27 @@
                 return result.join(', ') || 'Normal';
             }
             
-            // Procesar el código
+            // Procesar cada carácter
             let i = 0;
             while (i < code.length) {
                 if (code[i] === '&' || code[i] === '§') {
-                    // Guardamos la posición del &
-                    const ampersandPos = i;
-                    i++;
-                    
-                    // Desactivamos ofuscación al encontrar cualquier &
+                    // Desactivar ofuscación al encontrar cualquier &
                     isObfuscated = false;
                     
+                    const formatChar = code[i];
+                    i++;
+                    
                     if (code[i] === '#') {
-                        // Código HEX (&#RRGGBB)
+                        // Código HEX
                         const hexColor = code.substring(i+1, i+7);
                         if (/^[0-9A-Fa-f]{6}$/.test(hexColor)) {
                             currentColor = `#${hexColor}`;
                             i += 7;
                         }
                     } else {
-                        // Código clásico (&a, &l, etc.)
+                        // Código clásico
                         const formatCode = code[i].toLowerCase();
                         switch (formatCode) {
-                            // Colores
                             case '0': currentColor = '#000000'; break;
                             case '1': currentColor = '#0000AA'; break;
                             case '2': currentColor = '#00AA00'; break;
@@ -116,8 +307,6 @@
                             case 'd': currentColor = '#FF55FF'; break;
                             case 'e': currentColor = '#FFFF55'; break;
                             case 'f': currentColor = '#FFFFFF'; break;
-                            
-                            // Formatos
                             case 'k': isObfuscated = true; break;
                             case 'l': isBold = true; break;
                             case 'm': isStrikethrough = true; break;
@@ -134,16 +323,14 @@
                         i++;
                     }
                 } else {
-                    // Es un carácter normal
+                    // Procesar carácter normal
                     const char = code[i];
-                    
-                    // Añadir al resultado principal
                     const span = document.createElement('span');
+                    
                     span.style.color = currentColor;
                     if (isBold) span.style.fontWeight = 'bold';
                     if (isObfuscated) {
                         span.classList.add('obfuscated');
-                        span.setAttribute('data-real-char', char);
                         span.textContent = getRandomChar();
                         obfuscatedElements.push(span);
                     } else {
@@ -154,8 +341,6 @@
                     if (isItalic) span.style.fontStyle = 'italic';
                     
                     resultDiv.appendChild(span);
-                    
-                    // Añadir al grid de letras (sin ofuscación para ver el carácter real)
                     addLetterToGrid(char, currentColor, {
                         bold: isBold,
                         obfuscated: isObfuscated,
@@ -168,7 +353,7 @@
                 }
             }
             
-            // Iniciar animación para texto ofuscado
+            // Iniciar animación de ofuscación
             if (obfuscatedElements.length > 0) {
                 obfuscationInterval = setInterval(() => {
                     obfuscatedElements.forEach(el => {
@@ -197,7 +382,12 @@
             obfuscatedElements = [];
         }
         
-        window.onload = processCode;
+        // Iniciar automáticamente al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            processCode();
+            // Actualizar cada vez que cambia el texto
+            document.getElementById('minecraftCode').addEventListener('input', processCode);
+        });
     </script>
 </body>
 </html>
